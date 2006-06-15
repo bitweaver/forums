@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
-* $Id: BitForum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.3 2006/06/15 22:53:22 spiderr Exp $
+* $Id: BitForum.php,v 1.3 2006/06/15 22:53:22 spiderr Exp $
 */
 
 /**
@@ -10,7 +10,7 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.2 $ $Date: 2006/06/15 22:42:31 $ $Author: spiderr $
+* @version $Revision: 1.3 $ $Date: 2006/06/15 22:53:22 $ $Author: spiderr $
 * @class BitForum
 */
 
@@ -19,7 +19,7 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 /**
 * This is used to uniquely identify the object
 */
-define( 'BITBITFORUM_CONTENT_TYPE_GUID', 'bitbitforum' );
+define( 'BITFORUM_CONTENT_TYPE_GUID', 'bitforum' );
 
 class BitForum extends LibertyAttachable {
 	/**
@@ -35,9 +35,9 @@ class BitForum extends LibertyAttachable {
 		LibertyAttachable::LibertyAttachable();
 		$this->mBitForumId = $pBitForumId;
 		$this->mContentId = $pContentId;
-		$this->mContentTypeGuid = BITBITFORUM_CONTENT_TYPE_GUID;
-		$this->registerContentType( BITBITFORUM_CONTENT_TYPE_GUID, array(
-			'content_type_guid' => BITBITFORUM_CONTENT_TYPE_GUID,
+		$this->mContentTypeGuid = BITFORUM_CONTENT_TYPE_GUID;
+		$this->registerContentType( BITFORUM_CONTENT_TYPE_GUID, array(
+			'content_type_guid' => BITFORUM_CONTENT_TYPE_GUID,
 			'content_description' => 'BitForum package with bare essentials',
 			'handler_class' => 'BitForum',
 			'handler_package' => 'bitforum',
