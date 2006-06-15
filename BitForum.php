@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.1 2006/06/15 22:34:33 spiderr Exp $
-* $Id: BitForum.php,v 1.1 2006/06/15 22:34:33 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
+* $Id: BitForum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
 */
 
 /**
@@ -10,8 +10,8 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.1 $ $Date: 2006/06/15 22:34:33 $ $Author: spiderr $
-* @class BitBitForum
+* @version $Revision: 1.2 $ $Date: 2006/06/15 22:42:31 $ $Author: spiderr $
+* @class BitForum
 */
 
 require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
@@ -21,7 +21,7 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 */
 define( 'BITBITFORUM_CONTENT_TYPE_GUID', 'bitbitforum' );
 
-class BitBitForum extends LibertyAttachable {
+class BitForum extends LibertyAttachable {
 	/**
 	* Primary key for our mythical BitForum class object & table
 	* @public
@@ -31,7 +31,7 @@ class BitBitForum extends LibertyAttachable {
 	/**
 	* During initialisation, be sure to call our base constructors
 	**/
-	function BitBitForum( $pBitForumId=NULL, $pContentId=NULL ) {
+	function BitForum( $pBitForumId=NULL, $pContentId=NULL ) {
 		LibertyAttachable::LibertyAttachable();
 		$this->mBitForumId = $pBitForumId;
 		$this->mContentId = $pContentId;
@@ -39,9 +39,9 @@ class BitBitForum extends LibertyAttachable {
 		$this->registerContentType( BITBITFORUM_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBITFORUM_CONTENT_TYPE_GUID,
 			'content_description' => 'BitForum package with bare essentials',
-			'handler_class' => 'BitBitForum',
+			'handler_class' => 'BitForum',
 			'handler_package' => 'bitforum',
-			'handler_file' => 'BitBitForum.php',
+			'handler_file' => 'BitForum.php',
 			'maintainer_url' => 'http://www.bitweaver.org'
 		) );
 	}

@@ -1,11 +1,11 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.1 2006/06/15 22:27:17 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
 // Copyright (c) 2004 bitweaver BitForum
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 // Initialization
 require_once( '../bit_setup_inc.php' );
-require_once( BITFORUM_PKG_PATH.'BitBitForum.php' );
+require_once( BITFORUM_PKG_PATH.'BitForum.php' );
 
 // Is package installed and enabled
 $gBitSystem->verifyPackage( 'bitforum' );
@@ -33,7 +33,7 @@ if( isset( $_REQUEST["submit_mult"] ) && isset( $_REQUEST["checked"] ) && $_REQU
 		$formHash['delete'] = TRUE;
 		$formHash['submit_mult'] = 'remove_bitforums';
 		foreach( $_REQUEST["checked"] as $del ) {
-			$tmpPage = new BitBitForum( $del);
+			$tmpPage = new BitForum( $del);
 			if ( $tmpPage->load() && !empty( $tmpPage->mInfo['title'] )) {
 				$info = $tmpPage->mInfo['title'];
 			} else {
@@ -44,7 +44,7 @@ if( isset( $_REQUEST["submit_mult"] ) && isset( $_REQUEST["checked"] ) && $_REQU
 		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete '.count( $_REQUEST["checked"] ).' bitforums?', 'error' => 'This cannot be undone!' ) );
 	} else {
 		foreach( $_REQUEST["checked"] as $deleteId ) {
-			$tmpPage = new BitBitForum( $deleteId );
+			$tmpPage = new BitForum( $deleteId );
 			if( !$tmpPage->load() || !$tmpPage->expunge() ) {
 				array_merge( $errors, array_values( $tmpPage->mErrors ) );
 			}
@@ -56,7 +56,7 @@ if( isset( $_REQUEST["submit_mult"] ) && isset( $_REQUEST["checked"] ) && $_REQU
 }
 
 // create new bitforum object
-$bitforum = new BitBitForum();
+$bitforum = new BitForum();
 $bitforumsList = $bitforum->getList( $_REQUEST );
 $gBitSmarty->assign_by_ref( 'bitforumsList', $bitforumsList );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_forums/remove_bitforum.php,v 1.1 2006/06/15 22:27:17 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_forums/remove_bitforum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: remove_bitforum.php,v 1.1 2006/06/15 22:27:17 spiderr Exp $
+ * $Id: remove_bitforum.php,v 1.2 2006/06/15 22:42:31 spiderr Exp $
  * @package bitforum
  * @subpackage functions
  */
@@ -17,7 +17,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-include_once( BITFORUM_PKG_PATH.'BitBitForum.php');
+include_once( BITFORUM_PKG_PATH.'BitForum.php');
 include_once( BITFORUM_PKG_PATH.'lookup_bitforum_inc.php' );
 
 $gBitSystem->verifyPackage( 'bitforum' );
