@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForumTopic.php,v 1.1 2006/06/16 05:09:55 spiderr Exp $
-* $Id: BitForumTopic.php,v 1.1 2006/06/16 05:09:55 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_forums/BitForumTopic.php,v 1.2 2006/06/16 07:18:02 spiderr Exp $
+* $Id: BitForumTopic.php,v 1.2 2006/06/16 07:18:02 spiderr Exp $
 */
 
 /**
@@ -10,7 +10,7 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.1 $ $Date: 2006/06/16 05:09:55 $ $Author: spiderr $
+* @version $Revision: 1.2 $ $Date: 2006/06/16 07:18:02 $ $Author: spiderr $
 * @class BitForumTopic
 */
 
@@ -19,7 +19,7 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 /**
 * This is used to uniquely identify the object
 */
-define( 'BITFORUM_CONTENT_TYPE_GUID', 'bitforumtopic' );
+define( 'BITFORUMTOPIC_CONTENT_TYPE_GUID', 'bitforumtopic' );
 
 class BitForumTopic extends LibertyAttachable {
 	/**
@@ -35,9 +35,9 @@ class BitForumTopic extends LibertyAttachable {
 		LibertyAttachable::LibertyAttachable();
 		$this->mBitForumTopicId = $pBitForumTopicId;
 		$this->mContentId = $pContentId;
-		$this->mContentTypeGuid = BITFORUM_CONTENT_TYPE_GUID;
-		$this->registerContentType( BITFORUM_CONTENT_TYPE_GUID, array(
-			'content_type_guid' => BITFORUM_CONTENT_TYPE_GUID,
+		$this->mContentTypeGuid = BITFORUMTOPIC_CONTENT_TYPE_GUID;
+		$this->registerContentType( BITFORUMTOPIC_CONTENT_TYPE_GUID, array(
+			'content_type_guid' => BITFORUMTOPIC_CONTENT_TYPE_GUID,
 			'content_description' => 'BitForumTopic package with bare essentials',
 			'handler_class' => 'BitForumTopic',
 			'handler_package' => 'bitforum',
@@ -54,27 +54,24 @@ class BitForumTopic extends LibertyAttachable {
 		if( $this->verifyId( $this->mBitForumTopicId ) || $this->verifyId( $this->mContentId ) ) {
 			// LibertyContent::load()assumes you have joined already, and will not execute any sql!
 			// This is a significant performance optimization
-			$lookupColumn = $this->verifyId( $this->mBitForumTopicId ) ? 'bitforum_id' : 'content_id';
+			$lookupColumn = $this->verifyId( $this->mBitForumTopicId ) ? 'bitforum_topic_id' : 'content_id';
 			$bindVars = array();
 			$selectSql = $joinSql = $whereSql = '';
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mBitForumTopicId ) ? $this->mBitForumTopicId : $this->mContentId );
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-			$query = "SELECT s.*, lc.*, " .
-			"uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, " .
-			"uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name " .
-			"$selectSql " .
-			"FROM `".BIT_DB_PREFIX."bitforums` s " .
-			"INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = s.`content_id` ) $joinSql" .
-			"LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON( uue.`user_id` = lc.`modifier_user_id` )" .
-			"LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON( uuc.`user_id` = lc.`user_id` )" .
-			"WHERE s.`$lookupColumn`=? $whereSql";
+			$query = "SELECT bft.*, lc.*, uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql 
+			FROM `".BIT_DB_PREFIX."bitforums_topics` bft 
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = bft.`content_id` ) $joinSql
+				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON( uue.`user_id` = lc.`modifier_user_id` )
+				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON( uuc.`user_id` = lc.`user_id` )
+			WHERE bft.`$lookupColumn`=? $whereSql";
 			$result = $this->mDb->query( $query, $bindVars );
 
 			if( $result && $result->numRows() ) {
 				$this->mInfo = $result->fields;
 				$this->mContentId = $result->fields['content_id'];
-				$this->mBitForumTopicId = $result->fields['bitforum_id'];
+				$this->mBitForumTopicId = $result->fields['bitforum_topic_id'];
 
 				$this->mInfo['creator'] =( isset( $result->fields['creator_real_name'] )? $result->fields['creator_real_name'] : $result->fields['creator_user'] );
 				$this->mInfo['editor'] =( isset( $result->fields['modifier_real_name'] )? $result->fields['modifier_real_name'] : $result->fields['modifier_user'] );
@@ -100,30 +97,26 @@ class BitForumTopic extends LibertyAttachable {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
-		if( $this->verify( $pParamHash )&& LibertyAttachable::store( $pParamHash ) ) {
-			$table = BIT_DB_PREFIX."bitforums";
-			$this->mDb->StartTrans();
+		$this->mDb->StartTrans();
+		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
+			$table = BIT_DB_PREFIX."bitforums_topics";
 			if( $this->mBitForumTopicId ) {
-				$locId = array( "bitforum_id" => $pParamHash['bitforum_id'] );
-				$result = $this->mDb->associateUpdate( $table, $pParamHash['bitforum_store'], $locId );
+				$result = $this->mDb->associateUpdate( $table, $pParamHash['topic_store'], array( "bitforum_topic_id" => $pParamHash['bitforum_topic_id'] ) );
 			} else {
-				$pParamHash['bitforum_store']['content_id'] = $pParamHash['content_id'];
+				$pParamHash['topic_store']['content_id'] = $pParamHash['content_id'];
 				if( @$this->verifyId( $pParamHash['bitforum_id'] ) ) {
 					// if pParamHash['bitforum_id'] is set, some is requesting a particular bitforum_id. Use with caution!
-					$pParamHash['bitforum_store']['bitforum_id'] = $pParamHash['bitforum_id'];
+					$pParamHash['topic_store']['bitforum_topic_id'] = $pParamHash['bitforum_id'];
 				} else {
-					$pParamHash['bitforum_store']['bitforum_id'] = $this->mDb->GenID( 'bitforums_bitforum_id_seq' );
+					$pParamHash['topic_store']['bitforum_topic_id'] = $this->mDb->GenID( 'bitforums_topic_id_seq' );
 				}
-				$this->mBitForumTopicId = $pParamHash['bitforum_store']['bitforum_id'];
+				$this->mBitForumTopicId = $pParamHash['topic_store']['bitforum_topic_id'];
 
-				$result = $this->mDb->associateInsert( $table, $pParamHash['bitforum_store'] );
+				$result = $this->mDb->associateInsert( $table, $pParamHash['topic_store'] );
 			}
-
-
-			$this->mDb->CompleteTrans();
-			$this->load();
 		}
-		return( count( $this->mErrors )== 0 );
+		$this->mDb->CompleteTrans();
+		return( count( $this->mErrors ) == 0 );
 	}
 
 	/**
@@ -156,17 +149,7 @@ class BitForumTopic extends LibertyAttachable {
 		}
 
 		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
-			$pParamHash['bitforum_store']['content_id'] = $pParamHash['content_id'];
-		}
-
-		// check some lengths, if too long, then truncate
-		if( $this->isValid() && !empty( $this->mInfo['description'] ) && empty( $pParamHash['description'] ) ) {
-			// someone has deleted the description, we need to null it out
-			$pParamHash['bitforum_store']['description'] = '';
-		} else if( empty( $pParamHash['description'] ) ) {
-			unset( $pParamHash['description'] );
-		} else {
-			$pParamHash['bitforum_store']['description'] = substr( $pParamHash['description'], 0, 200 );
+			$pParamHash['topic_store']['content_id'] = $pParamHash['content_id'];
 		}
 
 		if( !empty( $pParamHash['data'] ) ) {
@@ -187,6 +170,14 @@ class BitForumTopic extends LibertyAttachable {
 		} else if( empty( $pParamHash['title'] ) ) {
 			// no name specified
 			$this->mErrors['title'] = 'You must specify a name';
+		}
+
+		// check for name issues, first truncate length if too long
+		if( @$this->verifyId( $pParamHash['forum_id'] ) && $forumContentId = $this->mDb->getOne( "SELECT content_id FROM `".BIT_DB_PREFIX."bitforums` WHERE `bitforum_id`=?", array( $pParamHash['forum_id'] ) ) ) {
+			$pParamHash['topic_store']['bitforum_content_id'] = $forumContentId;
+		} else if( empty( $pParamHash['title'] ) ) {
+			// no forum specified
+			$this->mErrors['forum'] = 'You must specify a forum';
 		}
 
 		return( count( $this->mErrors )== 0 );
@@ -245,11 +236,11 @@ class BitForumTopic extends LibertyAttachable {
 		}
 
 		$query = "SELECT ts.*, lc.`content_id`, lc.`title`, lc.`data` $selectSql
-			FROM `".BIT_DB_PREFIX."bitforums` ts INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = ts.`content_id` ) $joinSql
+			FROM `".BIT_DB_PREFIX."bitforums_topics` bft INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = bft.`content_id` ) $joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql
 			ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 		$query_cant = "select count(*)
-				FROM `".BIT_DB_PREFIX."bitforums` ts INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = ts.`content_id` ) $joinSql
+				FROM `".BIT_DB_PREFIX."bitforums_topics` bft INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lc.`content_id` = ts.`content_id` ) $joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql";
 		$result = $this->mDb->query( $query, $bindVars, $max_records, $offset );
 		$ret = array();
@@ -271,7 +262,7 @@ class BitForumTopic extends LibertyAttachable {
 	function getDisplayUrl() {
 		$ret = NULL;
 		if( @$this->verifyId( $this->mBitForumTopicId ) ) {
-			$ret = BITFORUM_PKG_URL."index.php?bitforum_id=".$this->mBitForumTopicId;
+			$ret = BITFORUM_PKG_URL."index.php?t=".$this->mBitForumTopicId;
 		}
 		return $ret;
 	}

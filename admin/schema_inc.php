@@ -8,9 +8,10 @@ $tables = array(
 	'bitforums_topics' => "
 		bitforum_topic_id I4 PRIMARY,
 		bitforum_content_id I4 NOTNULL,
-		content_id I4 NOTNOTULL
+		content_id I4 NOTNOTULL,
+		related_content_id I4
 		CONSTRAINT ', CONSTRAINT `bitforums_topics_forum_ref` FOREIGN KEY (`bitforum_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)
-
+					, CONSTRAINT `bitforums_topics_related_ref` FOREIGN KEY (`related_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 	"
 );
 
@@ -35,7 +36,8 @@ $gBitInstaller->registerSchemaIndexes( BITFORUM_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
-	'bit_bitforum_id_seq' => array( 'start' => 1 )
+	'bitforums_id_seq' => array( 'start' => 1 ),
+	'bitforums_topic_id_seq' => array( 'start' => 1 ),
 );
 $gBitInstaller->registerSchemaSequences( BITFORUM_PKG_NAME, $sequences );
 

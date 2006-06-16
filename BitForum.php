@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.3 2006/06/15 22:53:22 spiderr Exp $
-* $Id: BitForum.php,v 1.3 2006/06/15 22:53:22 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.4 2006/06/16 07:18:02 spiderr Exp $
+* $Id: BitForum.php,v 1.4 2006/06/16 07:18:02 spiderr Exp $
 */
 
 /**
@@ -10,7 +10,7 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.3 $ $Date: 2006/06/15 22:53:22 $ $Author: spiderr $
+* @version $Revision: 1.4 $ $Date: 2006/06/16 07:18:02 $ $Author: spiderr $
 * @class BitForum
 */
 
@@ -112,7 +112,7 @@ class BitForum extends LibertyAttachable {
 					// if pParamHash['bitforum_id'] is set, some is requesting a particular bitforum_id. Use with caution!
 					$pParamHash['bitforum_store']['bitforum_id'] = $pParamHash['bitforum_id'];
 				} else {
-					$pParamHash['bitforum_store']['bitforum_id'] = $this->mDb->GenID( 'bitforums_bitforum_id_seq' );
+					$pParamHash['bitforum_store']['bitforum_id'] = $this->mDb->GenID( 'bitforums_id_seq' );
 				}
 				$this->mBitForumId = $pParamHash['bitforum_store']['bitforum_id'];
 
