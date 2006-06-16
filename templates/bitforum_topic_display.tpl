@@ -32,5 +32,7 @@
 			{$gContent->getField('parsed_data')}
 		</div><!-- end .content -->
 	</div><!-- end .body -->
+
+	{include file="bitpackage:liberty/comments.tpl"}
 </div><!-- end .bitforum -->
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$gContent->mInfo}

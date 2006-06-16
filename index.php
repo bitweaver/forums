@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.3 2006/06/16 07:18:02 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.4 2006/06/16 22:26:15 spiderr Exp $
 // Copyright (c) 2004 bitweaver BitForum
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -26,6 +26,12 @@ require_once( BITFORUM_PKG_PATH.'lookup_bitforum_inc.php' );
 
 if( $gContent->isValid() ) {
 	$gForum->addHit();
+	$comments_vars = Array( 'bitforumtopic' );
+	$comments_prefix_var='bitforumtopic:';
+	$comments_object_var='bitforumtopic';
+	$commentsParentId = $gContent->mContentId;
+	$comments_return_url = $_SERVER['PHP_SELF']."?t=".$gContent->getField('bitforum_topic_id');
+	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 	$gBitSystem->display( 'bitpackage:bitforum/bitforum_topic_display.tpl', tra( 'Forum Topic' ).': '.$gForum->getTitle() );
 } elseif( $gForum->isValid() ) {
 	$gForum->addHit();
