@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_forums/templates/edit_bitforum.tpl,v 1.1 2006/06/15 22:27:17 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_forums/templates/edit_bitforum.tpl,v 1.2 2006/06/16 22:07:54 spiderr Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -15,7 +15,7 @@
 			{if $gContent->mInfo.bitforum_id}
 				{tr}{tr}Edit{/tr} {$gContent->mInfo.title|escape}{/tr}
 			{else}
-				{tr}Create New Record{/tr}
+				{tr}Create New Forum{/tr}
 			{/if}
 		</h1>
 	</div>

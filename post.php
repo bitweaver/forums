@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_forums/post.php,v 1.1 2006/06/16 07:18:02 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_forums/post.php,v 1.2 2006/06/16 22:07:54 spiderr Exp $
 // Copyright (c) 2004 bitweaver BitForum
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -18,7 +18,6 @@ if( isset( $_REQUEST['bitforum']['forum_id'] ) ) {
 }
 
 require_once( BITFORUM_PKG_PATH.'lookup_bitforum_inc.php' );
-require_once( BITFORUM_PKG_PATH.'lookup_bitforum_topic_inc.php' );
 
 if( !$gForum->isValid() ) {
 	$gBitSystem->fatalError( 'Unknown Forum' );
