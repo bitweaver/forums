@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.4 2006/06/16 22:26:15 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_forums/index.php,v 1.5 2006/06/16 22:41:40 spiderr Exp $
 // Copyright (c) 2004 bitweaver BitForum
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -35,6 +35,8 @@ if( $gContent->isValid() ) {
 	$gBitSystem->display( 'bitpackage:bitforum/bitforum_topic_display.tpl', tra( 'Forum Topic' ).': '.$gForum->getTitle() );
 } elseif( $gForum->isValid() ) {
 	$gForum->addHit();
+	$topics = $gForum->getTopics();
+	$gBitSmarty->assign_by_ref( 'topics', $topics );
 	$gBitSystem->display( 'bitpackage:bitforum/bitforum_display.tpl', tra( 'Forum' ).': '.$gForum->getTitle() );
 } else {
 	$bitforumsList = $gForum->getList( $_REQUEST );

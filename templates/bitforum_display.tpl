@@ -22,7 +22,15 @@
 
 	<div class="body">
 		<div class="content">
-		
+
+			<ul class="data">
+			{foreach from=$topics item=topic key=contentId}
+				<li><a href="{$smarty.const.BITFORUM_PKG_URL}index.php?t={$topic.bitforum_topic_id}">{$topic.title}</a></li>
+			{foreachelse}
+				<li>No topics yet.</li>
+			{/foreach}
+			</ul>
+
 		</div><!-- end .content -->
 	</div><!-- end .body -->
 </div><!-- end .bitforum -->
