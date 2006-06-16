@@ -5,6 +5,13 @@ $tables = array(
 		content_id I4 NOTNULL,
 		description C(255)
 	",
+	'bitforums_topics' => "
+		bitforum_topic_id I4 PRIMARY,
+		bitforum_content_id I4 NOTNULL,
+		content_id I4 NOTNOTULL
+		CONSTRAINT ', CONSTRAINT `bitforums_topics_forum_ref` FOREIGN KEY (`bitforum_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)
+
+	"
 );
 
 global $gBitInstaller;
