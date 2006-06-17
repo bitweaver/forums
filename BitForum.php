@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.5 2006/06/16 22:41:40 spiderr Exp $
-* $Id: BitForum.php,v 1.5 2006/06/16 22:41:40 spiderr Exp $
+* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.6 2006/06/17 17:24:42 spiderr Exp $
+* $Id: BitForum.php,v 1.6 2006/06/17 17:24:42 spiderr Exp $
 */
 
 /**
@@ -10,7 +10,7 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.5 $ $Date: 2006/06/16 22:41:40 $ $Author: spiderr $
+* @version $Revision: 1.6 $ $Date: 2006/06/17 17:24:42 $ $Author: spiderr $
 * @class BitForum
 */
 
@@ -222,13 +222,13 @@ class BitForum extends LibertyAttachable {
 		global $gBitSystem;
 		$ret = NULL;
 		if( $this->isValid() ) {
-			$sql = "SELECT bft.`content_id` AS hash_key, *  
+			$sql = "SELECT *  
 					FROM `".BIT_DB_PREFIX."bitforums_topics` bft
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(lc.`content_id`=bft.`content_id`)
 					WHERE `bitforum_content_id`=?";
 			$rs = $this->mDb->query( $sql, array( $this->getField('content_id') ), $gBitSystem->getConfig( 'max_forums_per_page', $gBitSystem->getConfig( 'max_records', 10 ) ) );
 			while( $row = $rs->fetchRow() ) {
-				$ret[$row['hash_key']] = $row;
+				$ret[$row['content_id']] = $row;
 			}
 		}
 		return $ret;
