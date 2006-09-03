@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_forums/templates/list_bitforums.tpl,v 1.3 2006/06/16 07:18:03 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_forums/templates/list_bitforums.tpl,v 1.4 2006/09/03 20:07:40 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -20,7 +20,7 @@
 							<span>{$bitforum.description|escape}</span>
 
 						{if $gBitUser->hasPermission( 'p_bitforum_edit' )}
-							{smartlink ititle="Edit" class="actionicon" ifile="edit.php" ibiticon="liberty/edit" forum_id=$bitforum.bitforum_id}
+							{smartlink ititle="Edit" class="actionicon" ifile="edit.php" ibiticon="icons/accessories-text-editor" forum_id=$bitforum.bitforum_id}
 						{/if}
 					</li>
 				{foreachelse}
