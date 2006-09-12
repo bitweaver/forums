@@ -8,6 +8,11 @@ $registerHash = array(
 $gBitSystem->registerPackage( $registerHash );
 
 if( $gBitSystem->isPackageActive( 'bitforum' ) ) {
-	$gBitSystem->registerAppMenu( BITFORUM_PKG_NAME, ucfirst( BITFORUM_PKG_DIR ), BITFORUM_PKG_URL.'index.php', 'bitpackage:bitforum/menu_bitforum.tpl', BITFORUM_PKG_NAME );
+	$menuHash = array(
+		'package_name'  => BITFORUM_PKG_NAME,
+		'index_url'     => BITFORUM_PKG_URL.'index.php',
+		'menu_template' => 'bitpackage:bitforum/menu_bitforum.tpl',
+	);
+	$gBitSystem->registerAppMenu( $menuHash );
 }
 ?>
