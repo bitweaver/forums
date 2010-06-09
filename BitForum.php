@@ -1,7 +1,7 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_forums/BitForum.php,v 1.6 2006/06/17 17:24:42 spiderr Exp $
-* $Id: BitForum.php,v 1.6 2006/06/17 17:24:42 spiderr Exp $
+* $Header$
+* $Id$
 */
 
 /**
@@ -10,7 +10,7 @@
 *
 * @date created 2004/8/15
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.6 $ $Date: 2006/06/17 17:24:42 $ $Author: spiderr $
+* @version $Revision$
 * @class BitForum
 */
 
