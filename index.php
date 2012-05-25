@@ -30,7 +30,7 @@ if( $gContent->isValid() ) {
 	$comments_prefix_var='bitforumtopic:';
 	$comments_object_var='bitforumtopic';
 	$commentsParentId = $gContent->mContentId;
-	$comments_return_url = $_SERVER['PHP_SELF']."?t=".$gContent->getField('bitforum_topic_id');
+	$comments_return_url = $_SERVER['SCRIPT_NAME']."?t=".$gContent->getField('bitforum_topic_id');
 	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 	$gBitSystem->display( 'bitpackage:bitforum/bitforum_topic_display.tpl', tra( 'Forum Topic' ).': '.$gForum->getTitle() );
 } elseif( $gForum->isValid() ) {
